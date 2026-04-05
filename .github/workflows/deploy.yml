@@ -1,0 +1,111 @@
+# Path: .github/workflows/deploy.yml
+name: Deploy Stack
+
+on:
+  # push:
+  #   branches: ["main"]
+  workflow_dispatch:
+
+env:
+  RTDB_URL: ${{ secrets.RTDB_URL }}
+
+jobs:
+  deploy:
+    # ✅ Đổi ở đây để chọn runner: ubuntu-latest | windows-latest
+    # runs-on: windows-latest
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ================================================================
+      #  STEP 1 — Pull .env & credentials từ RTDB
+      #  Chạy TRƯỚC detect-OS để không bị ghi đè
+      # ================================================================
+      - name: Pull .env & credentials from RTDB
+        shell: bash
+        run: bash .github/scripts/pull-env.sh
+
+      # ================================================================
+      #  STEP 2 — Detect OS, append biến vào .env + GITHUB_ENV
+      # ================================================================
+      - name: Detect OS environment
+        shell: bash
+        run: bash .github/scripts/detect-os.sh
+
+      # ================================================================
+      #  STEP 3 — Setup môi trường theo OS
+      #  Linux : setup sshd cho webssh
+      #  Windows: setup WSL2 + Docker Linux engine + ttyd
+      # ================================================================
+      - name: Setup environment (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: bash .github/scripts/setup-linux.sh
+
+      - name: Setup environment (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: .github/scripts/setup-windows.ps1
+
+      # ================================================================
+      #  STEP 4 — Build & start Docker Compose stack
+      #  Linux : docker compose trực tiếp
+      #  Windows: chạy bên trong WSL2
+      # ================================================================
+      - name: Build & start services (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: docker compose up -d --build --remove-orphans
+
+      - name: Build & start services (Windows/WSL2)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $wsl = $env:WSL_WORKSPACE
+          wsl -d Ubuntu -- bash -c "cd '$wsl' && sudo docker compose up -d --build --remove-orphans"
+
+      # ================================================================
+      #  STEP 5 — Cleanup + keepalive
+      # ================================================================
+      - name: Clean up unused images (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: docker image prune -f
+
+      - name: Clean up unused images (Windows/WSL2)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $wsl = $env:WSL_WORKSPACE
+          wsl -d Ubuntu -- bash -c "cd '$wsl' && sudo docker image prune -f"
+
+      - name: dotenvrtdb runner keepalive
+        shell: bash
+        run: dotenvrtdb runner keepalive
+
+      # ================================================================
+      #  STEP 6 — Collect artifacts (always)
+      # ================================================================
+      - name: Collect docker runtime artifacts (Linux)
+        if: always() && runner.os == 'Linux'
+        shell: bash
+        run: bash .github/scripts/collect-artifacts.sh
+
+      - name: Collect docker runtime artifacts (Windows/WSL2)
+        if: always() && runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $wsl = $env:WSL_WORKSPACE
+          if (-not $wsl) { Write-Host "WSL_WORKSPACE not set, skipping"; exit 0 }
+          wsl -d Ubuntu -- bash -c "cd '$wsl' && bash .github/scripts/collect-artifacts.sh"
+
+      - name: Upload docker runtime artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-runtime
+          path: artifacts/docker-runtime
+          if-no-files-found: warn
+          retention-days: 7
