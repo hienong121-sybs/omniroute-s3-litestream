@@ -1,0 +1,32 @@
+{
+  "name": "omniroute-s3-litestream",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "docker-compose-up": "docker compose up -d",
+    "git-o": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git o'\"",
+    "git-oexecute": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git oexecute'\"",
+    "git-oaddcommit": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git oaddcommit'\"",
+    "git-oclone": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git oclone'\"",
+    "git-opull": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git opull'\"",
+    "git-opullbranch": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git opullbranch'\"",
+    "git-opush": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git opush'\"",
+    "git-opushforce": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git opushforce'\"",
+    "git-opushforceurl": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git opushforceurl'\"",
+    "git-opullpush": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git opullpush'\"",
+    "git-ostash": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git ostash'\"",
+    "git-ofetch": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git ofetch'\"",
+    "git-oinit": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git oinit'\"",
+    "git-oconfig": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git oconfig'\"",
+    "git-oconfigclean": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git oconfigclean'\"",
+    "git-ocreateremote": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git ocreateremote'\"",
+    "git-addfile": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git addfile'\"",
+    "git-addfile-packagejson": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git addfile packagejson'\"",
+    "git-addfile-omessage": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git addfile omessage'\"",
+    "git-addfile-ogitignore": "powershell -NoProfile -Command \"Start-Process -FilePath cmd.exe -WorkingDirectory '%CD%' -ArgumentList '/k', 'git addfile ogitignore'\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

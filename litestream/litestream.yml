@@ -1,0 +1,13 @@
+dbs:
+  - path: /app/data/storage.sqlite
+    replica:
+      type: s3
+      bucket: ${LITESTREAM_BUCKET}
+      path: storage
+      endpoint: ${SUPABASE_PROJECT_REF}.supabase.co/storage/v1/s3
+      access-key-id: ${LITESTREAM_ACCESS_KEY_ID}
+      secret-access-key: ${LITESTREAM_SECRET_ACCESS_KEY}
+      force-path-style: true
+      sign-payload: true
+      region: ap-southeast-1
+      # Litestream v0.5.9+ tự detect Supabase, không cần force-path-style
