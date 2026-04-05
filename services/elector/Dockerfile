@@ -1,12 +1,14 @@
-FROM alpine:3.19
+FROM node:20-alpine
 
-# bash     — scripting
-# curl     — RTDB REST API calls
-# jq       — JSON parsing
-# docker-cli — container control qua socket
-RUN apk add --no-cache bash curl jq docker-cli
+# Cài docker-cli để control containers qua socket
+RUN apk add --no-cache docker-cli
 
-COPY elector.sh /elector.sh
-RUN chmod +x /elector.sh
+WORKDIR /app
 
-ENTRYPOINT ["/elector.sh"]
+# Chỉ copy file cần thiết
+COPY elector.js ./
+
+# Không cần npm install — chỉ dùng Node.js built-in modules:
+#   https, http, crypto, child_process
+
+ENTRYPOINT ["node", "elector.js"]
