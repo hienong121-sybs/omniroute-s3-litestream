@@ -15,7 +15,7 @@
 #   → Elector là người duy nhất quyết định start/stop
 #   → Tránh race condition với Docker restart policy
 ##############################################################
-
+version: "3.9"
 services:
   # ================================================================
   #  ELECTOR — Leader election daemon
@@ -25,7 +25,7 @@ services:
     build:
       context: ./services/elector
       dockerfile: Dockerfile
-    container_name: ${COMPOSE_PROJECT_NAME:-msi}-elector
+    container_name: elector
     restart: unless-stopped # elector TỰ restart nếu crash
     volumes:
       # Docker socket: để elector control các container khác
