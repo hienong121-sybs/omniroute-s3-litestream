@@ -60,3 +60,15 @@ if [ "$ERRORS" -gt 0 ]; then
   echo "🚫 $ERRORS lỗi — hãy fix trước khi up!"
   exit 1
 fi
+
+# --- Kiểm tra container cũ có mount conflict không ---
+echo ""
+echo "=== Checking existing containers ==="
+for cname in litestream omniroute cloudflared elector; do
+  if docker inspect "$cname" &>/dev/null; then
+    # Kiểm tra xem mount destination có phải directory không
+    MOUNTS=$(docker inspect "$cname" --format '{{range .Mounts}}{{.Source}} -> {{.Destination}}{{"\n"}}{{end}}')
+    echo "⚠️  Container '$cname' đã tồn tại — cần --force-recreate nếu mount thay đổi"
+    echo "$MOUNTS" | sed 's/^/   /'
+  fi
+done

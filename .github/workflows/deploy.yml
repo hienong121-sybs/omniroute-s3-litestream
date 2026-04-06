@@ -86,7 +86,8 @@ jobs:
       - name: Build & start services (Linux)
         if: runner.os == 'Linux'
         shell: bash
-        run: docker compose up -d --build --remove-orphans
+        # run: docker compose up -d --build --remove-orphans
+        run: docker compose up -d --build --remove-orphans --force-recreate
 
       - name: Build & start services (Windows/WSL2)
         if: runner.os == 'Windows'
