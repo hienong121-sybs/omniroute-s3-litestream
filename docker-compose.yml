@@ -198,7 +198,7 @@ services:
     command: --noauth --port 80 --root /srv --database /database/filebrowser.db
     volumes:
       - .:/srv
-      - filebrowser_data:/database
+      # - filebrowser_data:/database
     # labels:
     #   - "caddy=http://${SUBDOMAIN_FILEBROWSER:-files-my-docker-app}.${DOMAIN}"
     #   - "caddy.reverse_proxy={{upstreams 80}}"
