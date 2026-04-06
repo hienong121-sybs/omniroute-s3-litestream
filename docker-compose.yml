@@ -189,3 +189,20 @@ services:
     restart: unless-stopped
     volumes:
       - ${DOCKER_SOCK:-/var/run/docker.sock}:/var/run/docker.sock:ro
+  # ================================================================
+  #  FILEBROWSER — Duyệt và tải file log qua web
+  # ================================================================
+  filebrowser:
+    image: filebrowser/filebrowser:latest
+    container_name: filebrowser
+    command: --noauth --port 80 --root /srv --database /database/filebrowser.db
+    volumes:
+      - .:/srv
+      - filebrowser_data:/database
+    # labels:
+    #   - "caddy=http://${SUBDOMAIN_FILEBROWSER:-files-my-docker-app}.${DOMAIN}"
+    #   - "caddy.reverse_proxy={{upstreams 80}}"
+    # - "caddy.basic_auth=/*"
+    # - "caddy.basic_auth.${CADDY_AUTH_USER}=${CADDY_AUTH_HASH}"
+    # networks: [app_net]
+    # restart: unless-stopped
